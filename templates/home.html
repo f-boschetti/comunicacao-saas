@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ComunicaSaaS — Automação de Comunicação</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        .hero { background: linear-gradient(135deg, #0d6efd 0%, #6610f2 100%); min-height: 100vh; }
+        .feature-icon { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+    </style>
+</head>
+<body>
+    <div class="hero text-white">
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container">
+                <a class="navbar-brand fw-bold fs-4" href="/"><i class="bi bi-chat-dots-fill me-2"></i>ComunicaSaaS</a>
+                <div class="ms-auto">
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'dashboard:index' %}" class="btn btn-light me-2">Dashboard</a>
+                    {% else %}
+                    <a href="{% url 'accounts:login' %}" class="btn btn-outline-light me-2">Entrar</a>
+                    <a href="{% url 'accounts:register' %}" class="btn btn-light">Criar Conta</a>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+        <div class="container py-5">
+            <div class="row align-items-center py-5">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold mb-4">Automatize sua comunicação com clientes</h1>
+                    <p class="lead mb-4">Centralize agendamentos, mensagens e leads em uma única plataforma. Envie lembretes automáticos, integre com WhatsApp e Instagram, e utilize inteligência artificial para respostas rápidas.</p>
+                    <a href="{% url 'accounts:register' %}" class="btn btn-light btn-lg me-3"><i class="bi bi-rocket-takeoff me-2"></i>Começar agora</a>
+                    <a href="#features" class="btn btn-outline-light btn-lg">Saiba mais</a>
+                </div>
+                <div class="col-lg-6 text-center">
+                    <i class="bi bi-chat-dots-fill" style="font-size: 15rem; opacity: 0.3;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section id="features" class="py-5">
+        <div class="container">
+            <h2 class="text-center fw-bold mb-5">Funcionalidades</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm text-center p-4">
+                        <div class="feature-icon bg-primary bg-opacity-10 text-primary mx-auto mb-3"><i class="bi bi-people"></i></div>
+                        <h5>Gestão de Clientes e Leads</h5>
+                        <p class="text-muted">Cadastre, organize e acompanhe seus clientes e potenciais clientes em um só lugar.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm text-center p-4">
+                        <div class="feature-icon bg-success bg-opacity-10 text-success mx-auto mb-3"><i class="bi bi-calendar-check"></i></div>
+                        <h5>Agendamentos Inteligentes</h5>
+                        <p class="text-muted">Agende compromissos e envie lembretes automáticos para reduzir faltas.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm text-center p-4">
+                        <div class="feature-icon bg-info bg-opacity-10 text-info mx-auto mb-3"><i class="bi bi-whatsapp"></i></div>
+                        <h5>Integração WhatsApp & Instagram</h5>
+                        <p class="text-muted">Comunique-se com seus clientes pelos canais que eles já utilizam.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm text-center p-4">
+                        <div class="feature-icon bg-warning bg-opacity-10 text-warning mx-auto mb-3"><i class="bi bi-robot"></i></div>
+                        <h5>Respostas com IA</h5>
+                        <p class="text-muted">Utilize inteligência artificial para gerar respostas automáticas e agilizar o atendimento.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm text-center p-4">
+                        <div class="feature-icon bg-danger bg-opacity-10 text-danger mx-auto mb-3"><i class="bi bi-envelope"></i></div>
+                        <h5>E-mails Automáticos</h5>
+                        <p class="text-muted">Envie e-mails de confirmação, lembretes e follow-ups automaticamente.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm text-center p-4">
+                        <div class="feature-icon bg-secondary bg-opacity-10 text-secondary mx-auto mb-3"><i class="bi bi-shield-check"></i></div>
+                        <h5>Auditoria e Segurança</h5>
+                        <p class="text-muted">Registro completo de ações, controle de acesso por perfis e conformidade com LGPD.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-dark text-white text-center py-4">
+        <p class="mb-0">&copy; 2026 ComunicaSaaS — Plataforma de automação de comunicação empresarial</p>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

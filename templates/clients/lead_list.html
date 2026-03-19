@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Leads — ComunicaSaaS{% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-funnel me-2"></i>Leads</h2>
+        <a href="{% url 'clients:lead_create' %}" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>Novo Lead</a>
+    </div>
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-4">
+                    <input type="text" name="q" class="form-control" placeholder="Buscar..." value="{{ query }}">
+                </div>
+                <div class="col-md-3">
+                    <select name="status" class="form-select">
+                        <option value="">Todos os status</option>
+                        {% for value, label in status_choices %}
+                        <option value="{{ value }}" {% if status_filter == value %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select name="source" class="form-select">
+                        <option value="">Todas as origens</option>
+                        {% for value, label in source_choices %}
+                        <option value="{{ value }}" {% if source_filter == value %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-outline-primary w-100"><i class="bi bi-search me-1"></i>Filtrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="card shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr><th>Nome</th><th>Telefone</th><th>Origem</th><th>Status</th><th>Responsável</th><th>Criado em</th><th>Ações</th></tr>
+                </thead>
+                <tbody>
+                    {% for lead in leads %}
+                    <tr>
+                        <td>{{ lead.name }}</td>
+                        <td>{{ lead.phone }}</td>
+                        <td><span class="badge bg-info">{{ lead.get_source_display }}</span></td>
+                        <td>
+                            {% if lead.status == "new" %}<span class="badge bg-primary">Novo</span>
+                            {% elif lead.status == "contacted" %}<span class="badge bg-warning text-dark">Contactado</span>
+                            {% elif lead.status == "qualified" %}<span class="badge bg-info">Qualificado</span>
+                            {% elif lead.status == "converted" %}<span class="badge bg-success">Convertido</span>
+                            {% else %}<span class="badge bg-danger">Perdido</span>{% endif %}
+                        </td>
+                        <td>{{ lead.assigned_to.get_full_name|default:"-" }}</td>
+                        <td>{{ lead.created_at|date:"d/m/Y" }}</td>
+                        <td>
+                            <a href="{% url 'clients:lead_edit' lead.pk %}" class="btn btn-sm btn-outline-primary" title="Editar"><i class="bi bi-pencil"></i></a>
+                            {% if lead.status != "converted" %}
+                            <a href="{% url 'clients:lead_convert' lead.pk %}" class="btn btn-sm btn-outline-success" title="Converter"><i class="bi bi-person-check"></i></a>
+                            {% endif %}
+                            <a href="{% url 'clients:lead_delete' lead.pk %}" class="btn btn-sm btn-outline-danger" title="Excluir"><i class="bi bi-trash"></i></a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="7" class="text-center text-muted py-4">Nenhum lead encontrado.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

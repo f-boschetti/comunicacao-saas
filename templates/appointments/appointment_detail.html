@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}{{ appointment.title }} — ComunicaSaaS{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-calendar-event me-2"></i>{{ appointment.title }}</h2>
+        <div><a href="{% url 'appointments:appointment_edit' appointment.pk %}" class="btn btn-outline-primary"><i class="bi bi-pencil me-1"></i>Editar</a> <a href="{% url 'appointments:appointment_delete' appointment.pk %}" class="btn btn-outline-danger"><i class="bi bi-trash me-1"></i>Excluir</a></div>
+    </div>
+    <div class="row"><div class="col-md-6"><div class="card shadow-sm"><div class="card-body">
+        <h5 class="card-title">Detalhes do Agendamento</h5>
+        <p><strong>Cliente:</strong> <a href="{% url 'clients:client_detail' appointment.client.pk %}">{{ appointment.client.name }}</a></p>
+        <p><strong>Profissional:</strong> {{ appointment.assigned_to.get_full_name|default:"-" }}</p>
+        <p><strong>Data/Hora:</strong> {{ appointment.date_time|date:"d/m/Y H:i" }}</p>
+        <p><strong>Duração:</strong> {{ appointment.duration_minutes }} minutos</p>
+        <p><strong>Status:</strong> {% if appointment.status == "scheduled" %}<span class="badge bg-primary">Agendado</span>{% elif appointment.status == "confirmed" %}<span class="badge bg-success">Confirmado</span>{% elif appointment.status == "completed" %}<span class="badge bg-secondary">Concluído</span>{% elif appointment.status == "cancelled" %}<span class="badge bg-danger">Cancelado</span>{% else %}<span class="badge bg-warning text-dark">Não compareceu</span>{% endif %}</p>
+        <p><strong>Lembrete enviado:</strong> {% if appointment.reminder_sent %}Sim{% else %}Não{% endif %}</p>
+        <p><strong>Antecedência do lembrete:</strong> {{ appointment.reminder_time_hours }} horas</p>
+        {% if appointment.description %}<p><strong>Descrição:</strong> {{ appointment.description }}</p>{% endif %}
+        {% if appointment.notes %}<p><strong>Observações:</strong> {{ appointment.notes }}</p>{% endif %}
+        <p class="text-muted"><small>Criado por {{ appointment.created_by.get_full_name|default:"Sistema" }} em {{ appointment.created_at|date:"d/m/Y H:i" }}</small></p>
+    </div></div></div></div>
+</div>
+{% endblock %}

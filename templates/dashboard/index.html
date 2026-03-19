@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — ComunicaSaaS{% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <h2 class="mb-4"><i class="bi bi-speedometer2 me-2"></i>Dashboard</h2>
+
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="card shadow-sm border-start border-primary border-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div><h6 class="text-muted mb-1">Clientes Ativos</h6><h3 class="mb-0">{{ total_clients }}</h3></div>
+                        <i class="bi bi-people text-primary" style="font-size: 2rem;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-start border-success border-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div><h6 class="text-muted mb-1">Leads Ativos</h6><h3 class="mb-0">{{ total_leads }}</h3></div>
+                        <i class="bi bi-funnel text-success" style="font-size: 2rem;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-start border-warning border-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div><h6 class="text-muted mb-1">Agendamentos Hoje</h6><h3 class="mb-0">{{ today_appointments }}</h3></div>
+                        <i class="bi bi-calendar-event text-warning" style="font-size: 2rem;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-start border-info border-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div><h6 class="text-muted mb-1">Novos Clientes (mês)</h6><h3 class="mb-0">{{ new_clients_month }}</h3></div>
+                        <i class="bi bi-person-plus text-info" style="font-size: 2rem;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="bi bi-calendar-check me-2"></i>Próximos Agendamentos</h5>
+                    <a href="{% url 'appointments:appointment_list' %}" class="btn btn-sm btn-outline-primary">Ver todos</a>
+                </div>
+                <div class="card-body">
+                    {% for apt in upcoming_appointments %}
+                    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
+                        <div>
+                            <strong><a href="{% url 'appointments:appointment_detail' apt.pk %}">{{ apt.title }}</a></strong><br>
+                            <small class="text-muted">{{ apt.client.name }} — {{ apt.date_time|date:"d/m/Y H:i" }}</small>
+                        </div>
+                        <span class="badge bg-{% if apt.status == 'confirmed' %}success{% else %}primary{% endif %}">{{ apt.get_status_display }}</span>
+                    </div>
+                    {% empty %}
+                    <p class="text-muted text-center py-3">Nenhum agendamento próximo.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="bi bi-funnel me-2"></i>Leads Recentes</h5>
+                    <a href="{% url 'clients:lead_list' %}" class="btn btn-sm btn-outline-primary">Ver todos</a>
+                </div>
+                <div class="card-body">
+                    {% for lead in recent_leads %}
+                    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
+                        <div>
+                            <strong>{{ lead.name }}</strong><br>
+                            <small class="text-muted">{{ lead.phone }} — {{ lead.get_source_display }}</small>
+                        </div>
+                        <span class="badge bg-{% if lead.status == 'new' %}primary{% elif lead.status == 'contacted' %}warning text-dark{% elif lead.status == 'qualified' %}info{% else %}secondary{% endif %}">{{ lead.get_status_display }}</span>
+                    </div>
+                    {% empty %}
+                    <p class="text-muted text-center py-3">Nenhum lead recente.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mt-2">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="bi bi-clock-history me-2"></i>Atividade Recente</h5>
+                    <a href="{% url 'communications:interaction_list' %}" class="btn btn-sm btn-outline-primary">Ver todas</a>
+                </div>
+                <div class="card-body">
+                    {% for interaction in recent_interactions %}
+                    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
+                        <div>
+                            <span class="badge bg-primary me-2">{{ interaction.get_channel_display }}</span>
+                            <a href="{% url 'clients:client_detail' interaction.client.pk %}">{{ interaction.client.name }}</a>
+                            <small class="text-muted ms-2">{{ interaction.content|truncatechars:80 }}</small>
+                        </div>
+                        <small class="text-muted">{{ interaction.created_at|date:"d/m/Y H:i" }}</small>
+                    </div>
+                    {% empty %}
+                    <p class="text-muted text-center py-3">Nenhuma atividade recente.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Cadastro — ComunicaSaaS{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <h3 class="text-center mb-4"><i class="bi bi-person-plus me-2"></i>Criar Conta</h3>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label">Nome da empresa</label>
+                            {{ form.company_name }}
+                            {% for error in form.company_name.errors %}<small class="text-danger">{{ error }}</small>{% endfor %}
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Nome</label>
+                                {{ form.first_name }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Sobrenome</label>
+                                {{ form.last_name }}
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Usuário</label>
+                            {{ form.username }}
+                            {% for error in form.username.errors %}<small class="text-danger">{{ error }}</small>{% endfor %}
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">E-mail</label>
+                                {{ form.email }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Telefone</label>
+                                {{ form.phone }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Senha</label>
+                                {{ form.password1 }}
+                                {% for error in form.password1.errors %}<small class="text-danger">{{ error }}</small>{% endfor %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Confirmar senha</label>
+                                {{ form.password2 }}
+                                {% for error in form.password2.errors %}<small class="text-danger">{{ error }}</small>{% endfor %}
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Criar conta</button>
+                    </form>
+                    <hr>
+                    <p class="text-center mb-0">Já tem conta? <a href="{% url 'accounts:login' %}">Entrar</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

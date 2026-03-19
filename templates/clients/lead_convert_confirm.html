@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Converter Lead — ComunicaSaaS{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body p-4 text-center">
+                    <i class="bi bi-person-check text-success" style="font-size: 3rem;"></i>
+                    <h4 class="mt-3">Converter Lead para Cliente</h4>
+                    <p>Deseja converter o lead <strong>{{ lead.name }}</strong> para cliente?</p>
+                    <p class="text-muted">Um novo registro de cliente será criado com os dados do lead.</p>
+                    <form method="post">
+                        {% csrf_token %}
+                        <a href="{% url 'clients:lead_list' %}" class="btn btn-outline-secondary me-2">Cancelar</a>
+                        <button type="submit" class="btn btn-success">Converter</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
